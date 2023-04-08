@@ -1,6 +1,10 @@
+mod input;
+
 use std::process::ExitCode;
 use std::env;
-use std::fs;
+
+use input::Input;
+
 
 fn main() -> ExitCode {
 
@@ -15,11 +19,10 @@ fn main() -> ExitCode {
 
     let file_path: &String = &args[1];
 
-    // read file
-    let file_contents = fs::read_to_string(file_path)
-        .expect("Should have been able to read the file");
+    // create input
+    let input: Input = Input::from_file(String::from(file_path));
 
-    println!("{file_contents}");
+    println!("{}", input.content);
 
     return ExitCode::SUCCESS;
 }
