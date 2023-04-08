@@ -1,9 +1,11 @@
 mod input;
+mod lexer;
 
 use std::process::ExitCode;
 use std::env;
 
 use input::Input;
+use lexer::{Lexer, Token};
 
 
 fn main() -> ExitCode {
@@ -22,7 +24,19 @@ fn main() -> ExitCode {
     // create input
     let input: Input = Input::from_file(String::from(file_path));
 
-    println!("{}", input.content);
+    // loop over tokens
+    let mut lexer: Lexer = Lexer::new(input);
+
+    loop {
+        let token: Option<Token> = lexer.next_token();
+
+        match token {
+            None => break,
+            Some(token) => {
+                println!("{}", lexer.pretty_format_token(&token));
+            }
+        }
+    }
 
     return ExitCode::SUCCESS;
 }
